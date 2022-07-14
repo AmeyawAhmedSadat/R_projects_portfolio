@@ -1,0 +1,131 @@
+---
+title: "Analysis of Titanic survival"
+author: "Ameyaw Ahmed Analysis"
+date: '2022-07-14'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# HYPOTHETICAL SCENARIO
+ You are a consulting data scientist and have been hired to analyse the titanic data.
+ - The goal of this analysis is to explain patterns of survival in the data
+
+ - The audience is decidedly non-data savvy!
+ 
+```{r loading the packages}
+library(tidyverse)
+library(tidyquant)
+library(scales)
+```
+
+```{r loading data}
+titanic <- read_csv(here::here("raw_data", "titanic.csv"))
+```
+
+```{r viweing the data}
+head(titanic, n = 15)
+```
+
+# Data wrangling
+- Setting variables as factors
+```{r}
+titanic$Pclass <- as_factor(titanic$Pclass)
+titanic$Survived <- as_factor(titanic$Survived)
+titanic$Sex <- as_factor(titanic$Sex)
+titanic$Embarked <- as_factor(titanic$Embarked)
+```
+
+## Questions to answer
+
+ - 1. What was the survival rate
+
+```{r}
+ggplot(data = titanic, aes(x = Survived)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "survived", y = "passengers count") +
+  ggtitle("Titanic survival rate")
+```
+
+- 2. What was the percentage rate by survival
+```{r}
+ggplot(data = titanic, aes(x =Sex, fill = Survived)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "gender", y = "passengers count") +
+  theme(legend.position = "top") +
+  ggtitle("Survival rate by gender")
+```
+
+- 3. What was the survival rate by class of ticket
+```{r}
+ggplot(data = titanic, aes(x =Pclass, fill = Survived)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "class", y = "passengers count") +
+  theme(legend.position = "top") +
+  ggtitle("Survival rate by ticket class")
+```
+
+- 4. What was the survival rate by class of ticket and gender
+```{r}
+ggplot(data = titanic, aes(x = Sex, fill = Survived)) +
+  geom_bar() +
+  facet_wrap(~ Pclass) +
+  theme_bw() +
+  labs(x = "gender", y = "passengers count") +
+  theme(legend.position = "top") +
+  ggtitle("Survival rate by gender and class")
+```
+
+- 5. What is the distribution of passenger age
+```{r}
+ggplot(data =  titanic, aes( x = Age )) +
+  geom_histogram(binwidth = 5) +
+  theme_bw() +
+  labs(x = "age",
+       y = "passenger count", 
+       title = "Age distribution")
+```
+
+- 6. What are the survival rates by age?
+```{r}
+ggplot(data =  titanic, aes( x = Age, fill = Survived )) +
+  geom_histogram(binwidth = 5) +
+  theme_bw() +
+  labs(x = "age",
+       y = "passenger count", 
+       title = "Age distribution")
+```
+
+```{r}
+ggplot( data = titanic, aes(x = Survived, y = Age)) +
+  geom_boxplot() + 
+  theme_classic() +
+  labs(x = "Survived", 
+       y = "age", 
+       title = "Distribution of age by survival")
+```
+
+-7. What is the survival rate by age when segmented by gender and class of ticket
+```{r}
+ggplot( data = titanic, aes(fill = Survived, x = Age)) +
+  facet_wrap(Sex ~ Pclass) +
+  geom_density(alpha = 0.5) + 
+  theme_bw() +
+  labs(x = "Survived", 
+       y = "age", 
+       title = "Survival rate by Age, sex and ticket class")
+```
+
+
+```{r}
+prop.table(table(titanic$Survived))
+```
+
+

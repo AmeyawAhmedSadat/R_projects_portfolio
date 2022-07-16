@@ -1,2 +1,2 @@
-# R_projects_portfolio
-This repository consists of data analysis projects done in R
+# Titanic Survival rate
+This project focuses on using data visualization to draw insights from the titanic dataset. The projects tries to understand what factors affect a person survival rate in the titanic ship.This is relevant in the sense that it is comparable to real world life cases as what factors may affect what type of services customers may choose and if they do choose such services, what are the key brand or product attributes the company could focus on their marketing campaigns
